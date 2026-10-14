@@ -89,7 +89,7 @@
       margin-top: 3px;
     }
 
-    .slayer-icon {
+    .icon-box {
       width: 50px;
       height: 50px;
       background: radial-gradient(circle, #332c24 0%, #17130f 100%);
@@ -100,6 +100,13 @@
       justify-content: center;
       box-shadow: 0 0 14px rgba(184, 147, 66, 0.35);
       flex-shrink: 0;
+    }
+
+    .icon-box img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      image-rendering: pixelated;
     }
 
     .mode-tabs {
@@ -314,8 +321,9 @@
 
     .btn-group {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .action-btn {
@@ -349,10 +357,10 @@
       background: #191613;
       border: 1px solid var(--border-gold);
       color: var(--text-muted);
-      padding: 6px 11px;
+      padding: 6px 9px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: bold;
     }
 
@@ -473,10 +481,19 @@
     }
 
     .bracelet-tag {
+      display: flex;
+      align-items: center;
+      gap: 5px;
       padding: 2px 6px;
       border-radius: 3px;
       font-weight: 700;
       font-size: 0.72rem;
+    }
+
+    .bracelet-tag img {
+      width: 14px;
+      height: 14px;
+      image-rendering: pixelated;
     }
 
     .bracelet-Slaughter {
@@ -715,29 +732,9 @@
   <!-- TOP HEADER -->
   <header class="header">
     <div class="header-title">
-      <!-- OSRS Slayer Skill Icon (Sword Impaling Skull) -->
-      <div class="slayer-icon" title="OSRS Slayer Skill Icon">
-        <svg width="36" height="36" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-          <!-- Diagonal Sword Blade (Top-Right to Bottom-Left) -->
-          <polygon points="56,6 60,10 18,54 12,58 14,50" fill="#a8b0b8" stroke="#111" stroke-width="2" />
-          <line x1="57" y1="9" x2="15" y2="53" stroke="#ffffff" stroke-width="1.5" />
-          <!-- Sword Crossguard & Pommel (Top-Right) -->
-          <polygon points="44,10 56,22 53,25 41,13" fill="#d4a017" stroke="#111" stroke-width="2" />
-          <circle cx="58" cy="6" r="3.5" fill="#d4a017" stroke="#111" stroke-width="1.8" />
-          <!-- Skull Cranium & Jaw -->
-          <path d="M20,24 C20,13 44,13 44,24 C44,29 41,33 39,35 L39,43 L25,43 L25,35 C23,33 20,29 20,24 Z" fill="#e8dec8" stroke="#111" stroke-width="2.5" stroke-linejoin="round" />
-          <!-- Skull Eye Sockets -->
-          <circle cx="27" cy="26" r="4" fill="#14110f" />
-          <circle cx="37" cy="26" r="4" fill="#14110f" />
-          <!-- Nasal Cavity -->
-          <polygon points="32,30 29.5,35 34.5,35" fill="#14110f" />
-          <!-- Skull Teeth -->
-          <line x1="29" y1="38" x2="29" y2="43" stroke="#14110f" stroke-width="2" />
-          <line x1="32" y1="38" x2="32" y2="43" stroke="#14110f" stroke-width="2" />
-          <line x1="35" y1="38" x2="35" y2="43" stroke="#14110f" stroke-width="2" />
-          <!-- Sword Tip Emerging Below Jaw -->
-          <polygon points="22,43 26,43 13,59 11,57" fill="#cfd6dc" stroke="#111" stroke-width="2" />
-        </svg>
+      <!-- OSRS Wiki Slayer Icon -->
+      <div class="icon-box" title="OSRS Slayer Skill">
+        <img src="https://oldschool.runescape.wiki/images/Slayer_icon.png" alt="Slayer" />
       </div>
       <div>
         <h1>
@@ -749,7 +746,7 @@
     </div>
     <div class="mode-tabs">
       <button class="tab-btn active" id="tabLiveBtn" onclick="switchMode('live')">⚔️ Live 1-Player Journey</button>
-      <button class="tab-btn" id="tabBatchBtn" onclick="switchMode('batch')">📊 Batch Monte Carlo</button>
+      <button class="tab-btn" id="tabBatchBtn" onclick="switchMode('batch')">📊 Monte Carlo</button>
     </div>
   </header>
 
@@ -762,34 +759,30 @@
 
       <div class="config-section">
         <label class="toggle-row">
-          <span>Elite Combat Achievements</span>
+          <span>Elite combat achievements</span>
           <input type="checkbox" id="cfgEliteCA" checked onchange="syncConfig()" />
         </label>
         <label class="toggle-row">
-          <span>99 Slayer / Max Cape</span>
+          <span>99 slayer/max cape</span>
           <input type="checkbox" id="cfgSlayerCape" checked onchange="syncConfig()" />
         </label>
         <label class="toggle-row">
-          <span>Use Bracelets of Slaughter</span>
+          <span>Bracelets of slaughter</span>
           <input type="checkbox" id="cfgSlaughter" checked onchange="syncConfig()" />
         </label>
         <label class="toggle-row">
-          <span>Use Expeditious Bracelets</span>
+          <span>Expeditious bracelets</span>
           <input type="checkbox" id="cfgExpeditious" checked onchange="syncConfig()" />
         </label>
 
         <div class="num-input-row">
-          <span title="Equip Slaughter if Combat Hours/Heart is at or below this value">Slaughter Hrs/Heart Cutoff:</span>
+          <span title="Equip Bracelet of slaughter if combat hours/heart is at or below this value">Slaughter hours/heart cutoff:</span>
           <input type="number" id="cfgSlaughterHrs" value="64" step="1" onchange="syncConfig()" />
-        </div>
-        <div class="num-input-row">
-          <span title="Equip Slaughter if Effective Superior Heart Denominator is at or below 1/X">Slaughter Max Denom (1/X):</span>
-          <input type="number" id="cfgSlaughterDenom" value="250" step="10" onchange="syncConfig()" />
         </div>
       </div>
 
       <div class="panel-header">
-        <span>🚫 Block List (Max 2)</span>
+        <span>🚫 Block List</span>
         <span id="blockCountLabel" style="font-size:0.78rem; color:var(--osrs-red)">2 / 2</span>
       </div>
       <div class="config-section">
@@ -862,7 +855,9 @@
             <button class="speed-btn active" id="spd1" onclick="setLiveSpeed(1)">1x</button>
             <button class="speed-btn" id="spd5" onclick="setLiveSpeed(5)">5x</button>
             <button class="speed-btn" id="spd25" onclick="setLiveSpeed(25)">25x</button>
-            <button class="speed-btn" id="spdMax" onclick="setLiveSpeed(100)">⚡ Turbo</button>
+            <button class="speed-btn" id="spd50" onclick="setLiveSpeed(50)">50x</button>
+            <button class="speed-btn" id="spd100" onclick="setLiveSpeed(100)">100x</button>
+            <button class="speed-btn" id="spdMax" onclick="setLiveSpeed(500)">⚡ Turbo</button>
           </div>
         </div>
 
@@ -1001,8 +996,13 @@
 
 <script>
 // ==============================================================================
-// TASK DATABASE
+// TASK DATABASE & SPRITES
 // ==============================================================================
+const BRACELET_ICONS = {
+  "Slaughter": "https://oldschool.runescape.wiki/images/Bracelet_of_slaughter.png",
+  "Expeditious": "https://oldschool.runescape.wiki/images/Expeditious_bracelet.png"
+};
+
 const DEFAULT_TASK_DATA = {
   "Crawling Hands":     { sup: "Crushing hand",               w: 10, min: 35,  max: 50,  eMin: null, eMax: null, qMin: -30, qMax: -15, pMin: 5,  pMax: 15, cMin: null, cMax: null, xMin: 0.25, xMax: 1.00, dMin: 0.50, dMax: 1.00, denom: 1376, travel: 7,   kph: 1565, nXP: 12,  sXP: 550 },
   "Cave Crawlers":      { sup: "Chasm Crawler",               w: 10, min: 35,  max: 50,  eMin: null, eMax: null, qMin: -30, qMax: -15, pMin: 5,  pMax: 15, cMin: null, cMax: null, xMin: 0.25, xMax: 1.00, dMin: 0.50, dMax: 1.00, denom: 1336, travel: 5,   kph: 1384, nXP: 22,  sXP: 600 },
@@ -1044,8 +1044,7 @@ let config = {
   useSlaughter: true,
   useExpeditious: true,
   slaughterHrs: 64.0,
-  slaughterDenom: 250,
-  blocked: ["Drakes", "Hydras"],
+  blocked: ["Drakes", "Venators"],
   extensions: {
     "Dark Beasts": false, "Araxytes": true, "Gargoyles": false,
     "Abyssal Demons": false, "Nechryael": false, "Cave Horrors": false,
@@ -1145,7 +1144,6 @@ function syncConfig() {
   config.useSlaughter = document.getElementById("cfgSlaughter").checked;
   config.useExpeditious = document.getElementById("cfgExpeditious").checked;
   config.slaughterHrs = parseFloat(document.getElementById("cfgSlaughterHrs").value) || 64.0;
-  config.slaughterDenom = parseFloat(document.getElementById("cfgSlaughterDenom").value) || 250;
   document.getElementById("hudSupRate").textContent = config.eliteCA ? "1/150 Spawn Rate" : "1/200 Spawn Rate";
 }
 
@@ -1177,7 +1175,7 @@ function chooseBracelet(monsterName, dropBonus) {
   const heartsPerKill = getSuperiorSpawnRate() * rolledDropRate;
   const combatHoursPerHeart = 1.0 / (d.kph * heartsPerKill);
 
-  if (effectiveDenom <= config.slaughterDenom || combatHoursPerHeart <= config.slaughterHrs) {
+  if (combatHoursPerHeart <= config.slaughterHrs) {
     return config.useSlaughter ? "Slaughter" : "None";
   } else {
     return config.useExpeditious ? "Expeditious" : "None";
@@ -1317,7 +1315,9 @@ function setLiveSpeed(spd) {
   document.getElementById("spd1").classList.toggle("active", spd === 1);
   document.getElementById("spd5").classList.toggle("active", spd === 5);
   document.getElementById("spd25").classList.toggle("active", spd === 25);
-  document.getElementById("spdMax").classList.toggle("active", spd === 100);
+  document.getElementById("spd50").classList.toggle("active", spd === 50);
+  document.getElementById("spd100").classList.toggle("active", spd === 100);
+  document.getElementById("spdMax").classList.toggle("active", spd === 500);
 }
 
 function appendChat(html, className) {
@@ -1358,6 +1358,11 @@ function renderTaskCards(offers, chosenTask, isCapeProc) {
     const badgeText = isChosen ? (isCapeProc ? "Cape Repeat" : "Chosen") : "";
     const rateStr = off.effDenom > 0 ? ("1/" + off.effDenom + " Heart") : "No Superior";
     const badgeHtml = isChosen ? ('<div class="chosen-badge">' + badgeText + '</div>') : '';
+    
+    let braceletHtml = off.bracelet;
+    if (BRACELET_ICONS[off.bracelet]) {
+      braceletHtml = '<img src="' + BRACELET_ICONS[off.bracelet] + '" alt="' + off.bracelet + '" /> ' + off.bracelet;
+    }
 
     card.innerHTML =
       badgeHtml +
@@ -1368,7 +1373,7 @@ function renderTaskCards(offers, chosenTask, isCapeProc) {
       '</div>' +
       '<div class="task-meta">' +
         '<span>⚡ ' + d.kph + ' KPH</span>' +
-        '<span class="bracelet-tag bracelet-' + off.bracelet + '">' + off.bracelet + '</span>' +
+        '<span class="bracelet-tag bracelet-' + off.bracelet + '">' + braceletHtml + '</span>' +
       '</div>';
 
     container.appendChild(card);
@@ -1512,7 +1517,8 @@ function updateLiveHUD() {
 function liveTick() {
   if (!liveState.running || liveState.gotHeart) return;
 
-  const killsPerTick = liveState.speed === 1 ? 3 : liveState.speed === 5 ? 18 : liveState.speed === 25 ? 90 : 450;
+  // 1x = 1 kill per tick. 5x = 5 kills, etc.
+  const killsPerTick = liveState.speed;
 
   for (let i = 0; i < killsPerTick; i++) {
     if (liveState.gotHeart) break;
