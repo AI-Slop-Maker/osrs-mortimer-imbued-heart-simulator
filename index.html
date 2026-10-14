@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OSRS Mortimer Simulator [100% Certified AI Slop Edition]</title>
+  <style>
+    :root {
+      --bg-dark: #12100e;
+      --panel-bg: #1e1b18;
+      --panel-inner: #28241f;
+      --border-gold: #5a4b32;
+      --border-bright: #b89342;
+      --osrs-yellow: #ffff00;
+      --osrs-orange: #ff981f;
+      --osrs-green: #00ff80;
+      --osrs-red: #ff4d4d;
+      --osrs-cyan: #00e5ff;
+      --osrs-purple: #c77dff;
+      --text-main: #e6dfd5;
+      --text-muted: #9e9485;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at 50% 0%, #2b2318 0%, #12100e 70%);
+      color: var(--text-main);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      padding: 18px;
+    }
+
+    /* Header */
+    .header {
+      max-width: 1450px;
+      margin: 0 auto 18px auto;
+      background: linear-gradient(180deg, #2b251d 0%, #1a1612 100%);
+      border: 2px solid var(--border-gold);
+      border-radius: 8px;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-title h1 {
+      font-size: 1.4rem;
+      color: var(--osrs-orange);
+      text-shadow: 2px 2px 0px #000;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .aislop-badge {
+      background: linear-gradient(90deg, #ff0055, #ff981f, #c77dff);
+      color: #000;
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 3px 9px;
+      border-radius: 4px;
+      text-shadow: none;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border: 1px solid #fff;
+      box-shadow: 0 0 12px rgba(255, 0, 85, 0.5);
+    }
+
+    .header-title p {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .slayer-icon {
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, #332c24 0%, #17130f 100%);
+      border: 2px solid var(--border-bright);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 14px rgba(184, 147, 66, 0.35);
+      flex-shrink: 0;
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 10px;
+    }
+
+    .tab-btn {
+      background: #231f1a;
+      color: var(--text-muted);
+      border: 2px solid var(--border-gold);
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.15s;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--osrs-orange);
+      color: var(--text-main);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(180deg, #5e4319 0%, #3a280d 100%);
+      color: var(--osrs-yellow);
+      border-color: var(--border-bright);
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    /* Main Grid */
+    .layout {
+      max-width: 1450px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    @media (max-width: 1050px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Sidebar Panel */
+    .panel {
+      background: var(--panel-bg);
+      border: 2px solid var(--border-gold);
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    }
+
+    .panel-header {
+      color: var(--osrs-orange);
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      border-bottom: 1px solid var(--border-gold);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    .config-section {
+      margin-bottom: 16px;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      font-size: 0.88rem;
+    }
+
+    .toggle-row input[type="checkbox"] {
+      accent-color: var(--osrs-orange);
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+    }
+
+    .num-input-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      font-size: 0.85rem;
+    }
+
+    .num-input-row input {
+      width: 75px;
+      background: #12100e;
+      border: 1px solid var(--border-gold);
+      color: var(--osrs-yellow);
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .pill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-height: 195px;
+      overflow-y: auto;
+      padding: 4px;
+      background: #141210;
+      border: 1px solid #383024;
+      border-radius: 6px;
+    }
+
+    .pill {
+      font-size: 0.76rem;
+      padding: 5px 9px;
+      border-radius: 4px;
+      background: #25211c;
+      border: 1px solid #453a29;
+      color: var(--text-muted);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.12s;
+    }
+
+    .pill:hover {
+      border-color: var(--text-main);
+      color: var(--text-main);
+    }
+
+    .pill.blocked {
+      background: #4d1818;
+      border-color: var(--osrs-red);
+      color: #ffb3b3;
+      font-weight: 700;
+    }
+
+    .pill.extended {
+      background: #143d26;
+      border-color: var(--osrs-green);
+      color: #b3ffd9;
+      font-weight: 700;
+    }
+
+    /* Stats HUD */
+    .hud-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 800px) {
+      .hud-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .stat-card {
+      background: linear-gradient(180deg, #28231d 0%, #1b1814 100%);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 12px 14px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--osrs-yellow);
+      text-shadow: 1px 1px 0 #000;
+      font-family: 'Consolas', monospace;
+    }
+
+    .stat-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--panel-inner);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .action-btn {
+      background: linear-gradient(180deg, #3c6e26 0%, #244715 100%);
+      border: 1px solid #63ad42;
+      color: #fff;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      text-shadow: 1px 1px 0 #000;
+      font-size: 0.88rem;
+      transition: filter 0.15s;
+    }
+
+    .action-btn:hover {
+      filter: brightness(1.15);
+    }
+
+    .action-btn.stop {
+      background: linear-gradient(180deg, #8a2525 0%, #571414 100%);
+      border-color: #d14747;
+    }
+
+    .action-btn.secondary {
+      background: linear-gradient(180deg, #4a4031 0%, #2b251c 100%);
+      border-color: #7d6b52;
+    }
+
+    .speed-btn {
+      background: #191613;
+      border: 1px solid var(--border-gold);
+      color: var(--text-muted);
+      padding: 6px 11px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+
+    .speed-btn.active {
+      background: var(--osrs-orange);
+      color: #000;
+      border-color: #fff;
+    }
+
+    /* Mortimer 3 Task Choice Cards */
+    .choices-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 800px) {
+      .choices-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .task-card {
+      background: linear-gradient(180deg, #26221c 0%, #191612 100%);
+      border: 2px solid #3d3426;
+      border-radius: 8px;
+      padding: 14px;
+      position: relative;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 135px;
+    }
+
+    .task-card.chosen {
+      border-color: var(--osrs-green);
+      box-shadow: 0 0 16px rgba(0, 255, 128, 0.2);
+      background: linear-gradient(180deg, #1f2e24 0%, #151c17 100%);
+    }
+
+    .task-card.cape-proc {
+      border-color: var(--osrs-purple);
+      box-shadow: 0 0 18px rgba(199, 125, 255, 0.3);
+    }
+
+    .chosen-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--osrs-green);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .task-monster {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--osrs-orange);
+      text-shadow: 1px 1px 0 #000;
+      margin-bottom: 4px;
+      padding-right: 68px;
+    }
+
+    .task-superior {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .mod-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      border: 1px solid transparent;
+    }
+
+    .mod-Drop {
+      background: rgba(255, 42, 109, 0.18);
+      border-color: #ff2a6d;
+      color: #ff85ad;
+    }
+
+    .mod-XP {
+      background: rgba(0, 229, 255, 0.15);
+      border-color: var(--osrs-cyan);
+      color: #80f2ff;
+    }
+
+    .mod-Quantity {
+      background: rgba(255, 152, 31, 0.18);
+      border-color: var(--osrs-orange);
+      color: #ffc278;
+    }
+
+    .mod-Points, .mod-Clues {
+      background: rgba(255, 255, 0, 0.12);
+      border-color: #b5b526;
+      color: #ffff99;
+    }
+
+    .task-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 8px;
+    }
+
+    .bracelet-tag {
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 700;
+      font-size: 0.72rem;
+    }
+
+    .bracelet-Slaughter {
+      background: #4a1525;
+      color: #ff6b9b;
+      border: 1px solid #ff2a6d;
+    }
+
+    .bracelet-Expeditious {
+      background: #13394a;
+      color: #6bdaff;
+      border: 1px solid #00e5ff;
+    }
+
+    /* Active Combat Progress Bar */
+    .combat-box {
+      background: var(--panel-inner);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+
+    .combat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 22px;
+      background: #110f0d;
+      border: 1px solid var(--border-gold);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #8c2020 0%, #288c37 100%);
+      transition: width 0.08s linear;
+    }
+
+    .progress-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    /* OSRS Chatbox Log */
+    .chatbox {
+      background: #0d0b09;
+      border: 2px solid var(--border-gold);
+      border-radius: 6px;
+      height: 330px;
+      overflow-y: auto;
+      padding: 12px 14px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .log-line {
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+
+    .log-task {
+      color: var(--osrs-orange);
+      font-weight: bold;
+      border-top: 1px solid #26211b;
+      padding-top: 6px;
+      margin-top: 4px;
+    }
+
+    .log-superior {
+      color: #ff5277;
+      font-weight: bold;
+      background: rgba(255, 42, 109, 0.08);
+    }
+
+    .log-gem {
+      color: var(--osrs-cyan);
+      font-weight: bold;
+      background: rgba(0, 229, 255, 0.12);
+      border-left: 3px solid var(--osrs-cyan);
+      padding-left: 8px;
+    }
+
+    .log-staff {
+      color: var(--osrs-purple);
+    }
+
+    .log-heart {
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 42, 109, 0.25) 100%);
+      border: 1px solid var(--osrs-yellow);
+      color: var(--osrs-yellow);
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 10px;
+      margin: 6px 0;
+      text-align: center;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    .log-muted {
+      color: var(--text-muted);
+    }
+
+    /* Collection Log Banner Toast */
+    .clog-banner {
+      display: none;
+      background: linear-gradient(180deg, #3b3123 0%, #241d14 100%);
+      border: 2px solid var(--border-bright);
+      border-radius: 8px;
+      padding: 14px 20px;
+      margin-bottom: 16px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.35);
+      animation: popIn 0.35s ease-out;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .clog-banner h3 {
+      color: var(--osrs-orange);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    .clog-banner p {
+      color: var(--osrs-yellow);
+      font-size: 1.15rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 0 #000;
+    }
+
+    /* Batch Results Leaderboard Table */
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      margin-top: 10px;
+    }
+
+    .leaderboard-table th {
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 2px solid var(--border-gold);
+      color: var(--osrs-orange);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+
+    .leaderboard-table td {
+      padding: 7px 10px;
+      border-bottom: 1px solid #2b2620;
+    }
+
+    .bar-wrap {
+      width: 100%;
+      background: #12100e;
+      height: 14px;
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid #383024;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff2a6d 0%, #ff981f 100%);
+    }
+
+    .extremes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .extremes-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .extreme-card {
+      background: var(--panel-inner);
+      border: 1px solid var(--border-gold);
+      border-radius: 6px;
+      padding: 12px;
+    }
+
+    .extreme-card h4 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .kph-editor {
+      max-height: 210px;
+      overflow-y: auto;
+      background: #141210;
+      border: 1px solid #383024;
+      border-radius: 6px;
+      padding: 6px 10px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="header">
+    <div class="header-title">
+      <!-- OSRS Slayer Skill Icon (Sword Impaling Skull) -->
+      <div class="slayer-icon" title="OSRS Slayer Skill Icon">
+        <svg width="36" height="36" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <!-- Diagonal Sword Blade (Top-Right to Bottom-Left) -->
+          <polygon points="56,6 60,10 18,54 12,58 14,50" fill="#a8b0b8" stroke="#111" stroke-width="2" />
+          <line x1="57" y1="9" x2="15" y2="53" stroke="#ffffff" stroke-width="1.5" />
+          <!-- Sword Crossguard & Pommel (Top-Right) -->
+          <polygon points="44,10 56,22 53,25 41,13" fill="#d4a017" stroke="#111" stroke-width="2" />
+          <circle cx="58" cy="6" r="3.5" fill="#d4a017" stroke="#111" stroke-width="1.8" />
+          <!-- Skull Cranium & Jaw -->
+          <path d="M20,24 C20,13 44,13 44,24 C44,29 41,33 39,35 L39,43 L25,43 L25,35 C23,33 20,29 20,24 Z" fill="#e8dec8" stroke="#111" stroke-width="2.5" stroke-linejoin="round" />
+          <!-- Skull Eye Sockets -->
+          <circle cx="27" cy="26" r="4" fill="#14110f" />
+          <circle cx="37" cy="26" r="4" fill="#14110f" />
+          <!-- Nasal Cavity -->
+          <polygon points="32,30 29.5,35 34.5,35" fill="#14110f" />
+          <!-- Skull Teeth -->
+          <line x1="29" y1="38" x2="29" y2="43" stroke="#14110f" stroke-width="2" />
+          <line x1="32" y1="38" x2="32" y2="43" stroke="#14110f" stroke-width="2" />
+          <line x1="35" y1="38" x2="35" y2="43" stroke="#14110f" stroke-width="2" />
+          <!-- Sword Tip Emerging Below Jaw -->
+          <polygon points="22,43 26,43 13,59 11,57" fill="#cfd6dc" stroke="#111" stroke-width="2" />
+        </svg>
+      </div>
+      <div>
+        <h1>
+          MORTIMER IMBUED HEART SIMULATOR
+          <span class="aislop-badge">🤖 100% CERTIFIED AI SLOP</span>
+        </h1>
+        <p>Artisanal Vibe-Coded AI Slop • Wyrmscraig Cavern 3-Task Engine • Dynamic Modifiers & Bracelets</p>
+      </div>
+    </div>
+    <div class="mode-tabs">
+      <button class="tab-btn active" id="tabLiveBtn" onclick="switchMode('live')">⚔️ Live 1-Player Journey</button>
+      <button class="tab-btn" id="tabBatchBtn" onclick="switchMode('batch')">📊 Batch Monte Carlo (20,000x)</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <!-- LEFT CONFIG SIDEBAR -->
+    <aside class="panel">
+      <div class="panel-header">
+        <span>⚙️ Player & Perks</span>
+      </div>
+
+      <div class="config-section">
+        <label class="toggle-row">
+          <span>Elite Combat Achievements (1/150)</span>
+          <input type="checkbox" id="cfgEliteCA" checked onchange="syncConfig()" />
+        </label>
+        <label class="toggle-row">
+          <span>99 Slayer / Max Cape (10% Repeat)</span>
+          <input type="checkbox" id="cfgSlayerCape" checked onchange="syncConfig()" />
+        </label>
+        <label class="toggle-row">
+          <span>Use Bracelets of Slaughter (+33%)</span>
+          <input type="checkbox" id="cfgSlaughter" checked onchange="syncConfig()" />
+        </label>
+        <label class="toggle-row">
+          <span>Use Expeditious Bracelets (-20%)</span>
+          <input type="checkbox" id="cfgExpeditious" checked onchange="syncConfig()" />
+        </label>
+
+        <div class="num-input-row">
+          <span title="Equip Slaughter if Combat Hours/Heart is at or below this value">Slaughter Hrs/Heart Cutoff:</span>
+          <input type="number" id="cfgSlaughterHrs" value="64" step="1" onchange="syncConfig()" />
+        </div>
+        <div class="num-input-row">
+          <span title="Equip Slaughter if Effective Superior Heart Denominator is at or below 1/X">Slaughter Max Denom (1/X):</span>
+          <input type="number" id="cfgSlaughterDenom" value="250" step="10" onchange="syncConfig()" />
+        </div>
+      </div>
+
+      <div class="panel-header">
+        <span>🚫 Block List (Max 2)</span>
+        <span id="blockCountLabel" style="font-size:0.78rem; color:var(--osrs-red)">2 / 2</span>
+      </div>
+      <div class="config-section">
+        <div class="pill-grid" id="blockPills"></div>
+      </div>
+
+      <div class="panel-header">
+        <span>📏 Task Extensions</span>
+        <span id="extCountLabel" style="font-size:0.78rem; color:var(--osrs-green)">1 Active</span>
+      </div>
+      <div class="config-section">
+        <div class="pill-grid" id="extPills"></div>
+      </div>
+
+      <div class="panel-header">
+        <span>⚡ Kills Per Hour (KPH)</span>
+        <button class="speed-btn" onclick="resetKPH()">Reset</button>
+      </div>
+      <div class="kph-editor" id="kphEditor"></div>
+    </aside>
+
+    <!-- RIGHT MAIN VIEW -->
+    <main>
+      <!-- ================= LIVE 1-PLAYER MODE ================= -->
+      <div id="liveModeView">
+        <!-- Live HUD -->
+        <div class="hud-grid">
+          <div class="stat-card">
+            <div class="stat-label">Tasks Completed</div>
+            <div class="stat-val" id="hudTasks">0</div>
+            <div class="stat-sub" id="hudStreak">Mortimer Streak: 50</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Time Elapsed</div>
+            <div class="stat-val" id="hudHours">0.0 hrs</div>
+            <div class="stat-sub" id="hudMins">0 mins</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Slayer XP Gained</div>
+            <div class="stat-val" id="hudXP" style="color:var(--osrs-cyan)">0</div>
+            <div class="stat-sub" id="hudXPHr">0 XP/hr</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Superiors Slain</div>
+            <div class="stat-val" id="hudSuperiors" style="color:#ff5277">0</div>
+            <div class="stat-sub" id="hudSupRate">1/150 Spawn Rate</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Unique Table Rolls</div>
+            <div class="stat-val" id="hudGems" style="color:var(--osrs-purple)">0 Gems</div>
+            <div class="stat-sub" id="hudStaves">0 Dust | 0 Mist Staves</div>
+          </div>
+        </div>
+
+        <!-- Collection Log Popup Banner -->
+        <div class="clog-banner" id="clogBanner">
+          <h3>Collection Log - New Item Added!</h3>
+          <p id="clogText">Imbued heart</p>
+        </div>
+
+        <!-- Live Controls -->
+        <div class="controls-bar">
+          <div class="btn-group">
+            <button class="action-btn" id="btnStartLive" onclick="toggleLiveSim()">▶ Start Slayer Grind</button>
+            <button class="action-btn secondary" onclick="stepSingleTask()">⏭️ Step 1 Task</button>
+            <button class="action-btn secondary" onclick="resetLiveSim()">🔄 Reset</button>
+          </div>
+          <div class="btn-group">
+            <span style="font-size:0.8rem; color:var(--text-muted)">Sim Speed:</span>
+            <button class="speed-btn active" id="spd1" onclick="setLiveSpeed(1)">1x</button>
+            <button class="speed-btn" id="spd5" onclick="setLiveSpeed(5)">5x</button>
+            <button class="speed-btn" id="spd25" onclick="setLiveSpeed(25)">25x</button>
+            <button class="speed-btn" id="spdMax" onclick="setLiveSpeed(100)">⚡ Turbo</button>
+          </div>
+        </div>
+
+        <!-- Mortimer's 3 Task Choices -->
+        <div class="panel" style="margin-bottom: 16px;">
+          <div class="panel-header">
+            <span>💀 Mortimer's Current Assignment Offer</span>
+            <span id="offerStatusLabel" style="font-size:0.8rem; color:var(--text-muted)">Waiting to start...</span>
+          </div>
+          <div class="choices-container" id="choicesContainer">
+            <div class="task-card"><div class="task-monster">Option 1</div><div class="task-superior">Click Start to roll tasks from Mortimer</div></div>
+            <div class="task-card"><div class="task-monster">Option 2</div><div class="task-superior">Mortimer offers 3 distinct tasks at 50+ streak</div></div>
+            <div class="task-card"><div class="task-monster">Option 3</div><div class="task-superior">Each task rolls a random Mortifier perk</div></div>
+          </div>
+
+          <!-- Active Task Progress Bar -->
+          <div class="combat-box">
+            <div class="combat-top">
+              <strong id="activeTaskTitle" style="color:var(--osrs-orange)">No Active Task</strong>
+              <span id="activeBraceletLabel" style="font-size:0.82rem; color:var(--text-muted)">—</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="combatProgressFill"></div>
+              <div class="progress-text" id="combatProgressText">0 / 0 Kills Remaining</div>
+            </div>
+          </div>
+
+          <!-- OSRS Chatbox -->
+          <div class="panel-header" style="margin-bottom:8px;">
+            <span>📜 Game Chat & Superior Drop Log</span>
+            <button class="speed-btn" onclick="clearChat()">Clear Log</button>
+          </div>
+          <div class="chatbox" id="chatbox">
+            <div class="log-line log-muted">Welcome to Old School RuneScape (Certified AI Slop Simulator).</div>
+            <div class="log-line log-muted">Head to Wyrmscraig Cavern and click "Start Slayer Grind" to begin hunting the Imbued Heart.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= BATCH MONTE CARLO MODE ================= -->
+      <div id="batchModeView" class="hidden">
+        <div class="controls-bar">
+          <div class="btn-group">
+            <span style="font-size:0.9rem; font-weight:bold;">Simulations to Run:</span>
+            <button class="speed-btn" id="batchCnt1000" onclick="setBatchCount(1000)">1,000</button>
+            <button class="speed-btn active" id="batchCnt5000" onclick="setBatchCount(5000)">5,000</button>
+            <button class="speed-btn" id="batchCnt20000" onclick="setBatchCount(20000)">20,000</button>
+          </div>
+          <div class="btn-group">
+            <button class="action-btn" id="btnRunBatch" onclick="startBatchSim()">🚀 Run Batch Simulation</button>
+          </div>
+        </div>
+
+        <!-- Batch Progress -->
+        <div class="combat-box" id="batchProgressBox">
+          <div class="combat-top">
+            <strong style="color:var(--osrs-orange)" id="batchStatusTitle">Ready to Simulate</strong>
+            <span id="batchPctText" style="font-size:0.82rem; color:var(--text-muted)">0%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="batchProgressFill"></div>
+            <div class="progress-text" id="batchProgressLabel">0 / 5,000 Hearts Found</div>
+          </div>
+        </div>
+
+        <!-- Batch Summary HUD -->
+        <div class="hud-grid">
+          <div class="stat-card">
+            <div class="stat-label">Avg Tasks to Heart</div>
+            <div class="stat-val" id="bAvgTasks">—</div>
+            <div class="stat-sub">Tasks per Heart</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg Time to Heart</div>
+            <div class="stat-val" id="bAvgHours">—</div>
+            <div class="stat-sub">Total Hours</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg Slayer XP</div>
+            <div class="stat-val" id="bAvgXP" style="color:var(--osrs-cyan)">—</div>
+            <div class="stat-sub">XP per Heart</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg Superiors Seen</div>
+            <div class="stat-val" id="bAvgSups" style="color:#ff5277">—</div>
+            <div class="stat-sub">Superiors Slain</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg Eternal Gems</div>
+            <div class="stat-val" id="bAvgGems" style="color:var(--osrs-purple)">—</div>
+            <div class="stat-sub">Before 1st Heart</div>
+          </div>
+        </div>
+
+        <!-- Min / Max / Most Gems Cards -->
+        <div class="extremes-grid">
+          <div class="extreme-card">
+            <h4 style="color:var(--osrs-green)">🍀 Luckiest Run (Minimum XP)</h4>
+            <div id="bMinRun" style="font-size:0.86rem; color:var(--text-muted)">Run a batch simulation to view.</div>
+          </div>
+          <div class="extreme-card">
+            <h4 style="color:var(--osrs-red)">💀 Driest Run (Maximum XP)</h4>
+            <div id="bMaxRun" style="font-size:0.86rem; color:var(--text-muted)">Run a batch simulation to view.</div>
+          </div>
+          <div class="extreme-card">
+            <h4 style="color:var(--osrs-cyan)">💎 Most Eternal Gems Before Heart</h4>
+            <div id="bGemRun" style="font-size:0.86rem; color:var(--text-muted)">Run a batch simulation to view.</div>
+          </div>
+        </div>
+
+        <!-- Superior Breakdown Leaderboard -->
+        <div class="panel">
+          <div class="panel-header">
+            <span>🏆 Imbued Heart Drops by Superior Creature</span>
+            <span id="bTotalHeartsLabel" style="font-size:0.8rem; color:var(--text-muted)"></span>
+          </div>
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th style="width:55px">Rank</th>
+                <th>Slayer Task</th>
+                <th>Superior Variant</th>
+                <th style="width:120px; text-align:right">Hearts</th>
+                <th style="width:90px; text-align:right">Share %</th>
+                <th style="width:32%">Visual Distribution</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+              <tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:20px;">Click "Run Batch Simulation" above to generate the breakdown.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+<script>
+// ==============================================================================
+// TASK DATABASE
+// ==============================================================================
+const DEFAULT_TASK_DATA = {
+  "Crawling Hands":     { sup: "Crushing hand",               w: 10, min: 35,  max: 50,  eMin: null, eMax: null, qMin: -30, qMax: -15, pMin: 5,  pMax: 15, cMin: null, cMax: null, xMin: 0.25, xMax: 1.00, dMin: 0.50, dMax: 1.00, denom: 1376, travel: 7,   kph: 1565, nXP: 12,  sXP: 550 },
+  "Cave Crawlers":      { sup: "Chasm Crawler",               w: 10, min: 35,  max: 50,  eMin: null, eMax: null, qMin: -30, qMax: -15, pMin: 5,  pMax: 15, cMin: null, cMax: null, xMin: 0.25, xMax: 1.00, dMin: 0.50, dMax: 1.00, denom: 1336, travel: 5,   kph: 1384, nXP: 22,  sXP: 600 },
+  "Banshees":           { sup: "Screaming banshee",           w: 10, min: 35,  max: 50,  eMin: null, eMax: null, qMin: -30, qMax: -15, pMin: 5,  pMax: 15, cMin: 0.75, cMax: 1.50, xMin: 0.25, xMax: 1.00, dMin: 0.50, dMax: 1.00, denom: 1288, travel: 27,  kph: 1333, nXP: 22,  sXP: 610 },
+  "Rockslugs":          { sup: "Giant rockslug",              w: 10, min: 35,  max: 50,  eMin: null, eMax: null, qMin: -30, qMax: -15, pMin: 5,  pMax: 15, cMin: null, cMax: null, xMin: 0.25, xMax: 1.00, dMin: 0.50, dMax: 1.00, denom: 1240, travel: 32,  kph: 1125, nXP: 27,  sXP: 770 },
+  "Cockatrice":         { sup: "Cockathrice",                 w: 10, min: 35,  max: 50,  eMin: null, eMax: null, qMin: -30, qMax: -15, pMin: 5,  pMax: 15, cMin: 0.75, cMax: 1.50, xMin: 0.25, xMax: 1.00, dMin: 0.50, dMax: 1.00, denom: 1192, travel: 39,  kph: 818,  nXP: 37,  sXP: 950 },
+  "Pyrefiends":         { sup: "Flaming pyrelord",            w: 10, min: 35,  max: 50,  eMin: null, eMax: null, qMin: -30, qMax: -15, pMin: 5,  pMax: 15, cMin: 0.75, cMax: 1.50, xMin: 0.25, xMax: 1.00, dMin: 0.50, dMax: 1.00, denom: 1144, travel: 21,  kph: 857,  nXP: 45,  sXP: 1250 },
+  "Infernal Mages":     { sup: "Malevolent Mage",             w: 10, min: 35,  max: 50,  eMin: null, eMax: null, qMin: -30, qMax: -15, pMin: 5,  pMax: 15, cMin: null, cMax: null, xMin: 0.25, xMax: 1.00, dMin: 0.50, dMax: 1.00, denom: 960,  travel: 47,  kph: 642,  nXP: 60,  sXP: 1750 },
+  "Bloodveld":          { sup: "Insatiable Bloodveld",        w: 8,  min: 120, max: 180, eMin: 200,  eMax: 250,  qMin: 50,  qMax: 100, pMin: 10, pMax: 15, cMin: 0.35, cMax: 0.75, xMin: 0.05, xMax: 0.15, dMin: 1.00, dMax: 1.50, denom: 896,  travel: 45,  kph: 600,  nXP: 120, sXP: 2900 },
+  "Gryphons":           { sup: "Dire Gryphon",                w: 10, min: 80,  max: 120, eMin: 160,  eMax: 200,  qMin: 50,  qMax: 100, pMin: 10, pMax: 25, cMin: 0.75, cMax: 1.50, xMin: 0.20, xMax: 0.50, dMin: 1.00, dMax: 1.50, denom: 888,  travel: 56,  kph: 600,  nXP: 110, sXP: 2800 },
+  "Jellies":            { sup: "Vitreous Jelly",              w: 10, min: 80,  max: 120, eMin: null, eMax: null, qMin: 50,  qMax: 100, pMin: 10, pMax: 15, cMin: 0.35, cMax: 0.75, xMin: 0.10, xMax: 0.25, dMin: 1.00, dMax: 1.50, denom: 872,  travel: 125, kph: 1826, nXP: 75,  sXP: 1900 },
+  "Custodian Stalkers": { sup: "Ancient Custodian",           w: 8,  min: 80,  max: 120, eMin: 200,  eMax: 250,  qMin: 50,  qMax: 100, pMin: 10, pMax: 15, cMin: null, cMax: null, xMin: 0.10, xMax: 0.25, dMin: 1.00, dMax: 1.50, denom: 504,  travel: 86,  kph: 440,  nXP: 250, sXP: 3382 },
+  "Turoth":             { sup: "Spiked Turoth",               w: 10, min: 80,  max: 120, eMin: null, eMax: null, qMin: 30,  qMax: 80,  pMin: 15, pMax: 30, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 2.00, dMax: 3.00, denom: 832,  travel: 50,  kph: 383,  nXP: 76,  sXP: 1998 },
+  "Warped Creatures":   { sup: "Mutated Terrorbird/Tortoise", w: 10, min: 80,  max: 120, eMin: null, eMax: null, qMin: 30,  qMax: 80,  pMin: 15, pMax: 30, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 2.00, dMax: 3.00, denom: 816,  travel: 70,  kph: 457,  nXP: 150, sXP: 3200 },
+  "Cave Horrors":       { sup: "Cave abomination",            w: 10, min: 80,  max: 120, eMin: 200,  eMax: 250,  qMin: 30,  qMax: 80,  pMin: 15, pMax: 30, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 2.00, dMax: 3.00, denom: 784,  travel: 75,  kph: 610,  nXP: 55,  sXP: 1300 },
+  "Aberrant Spectres":  { sup: "Abhorrent spectre",           w: 10, min: 80,  max: 120, eMin: 200,  eMax: 250,  qMin: 30,  qMax: 80,  pMin: 15, pMax: 30, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 2.00, dMax: 3.00, denom: 760,  travel: 34,  kph: 500,  nXP: 90,  sXP: 2500 },
+  "Basilisks":          { sup: "Monstrous basilisk",          w: 10, min: 40,  max: 60,  eMin: 200,  eMax: 250,  qMin: 50,  qMax: 100, pMin: 25, pMax: 40, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 2.00, dMax: 3.00, denom: 1024, travel: 38,  kph: 450,  nXP: 75,  sXP: 1700 },
+  "Wyrms":              { sup: "Wyrmlings (Fast Skip)",       w: 10, min: 80,  max: 120, eMin: 200,  eMax: 250,  qMin: 50,  qMax: 100, pMin: 25, pMax: 40, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 2.00, dMax: 3.00, denom: 0,    travel: 20,  kph: 920,  nXP: 123, sXP: 3120 },
+  "Dust Devils":        { sup: "Choke devil",                 w: 8,  min: 120, max: 180, eMin: 200,  eMax: 250,  qMin: 50,  qMax: 150, pMin: 10, pMax: 15, cMin: null, cMax: null, xMin: 0.10, xMax: 0.20, dMin: 1.00, dMax: 1.50, denom: 680,  travel: 133, kph: 1065, nXP: 105, sXP: 3000 },
+  "Kurask":             { sup: "King kurask",                 w: 10, min: 40,  max: 60,  eMin: null, eMax: null, qMin: 30,  qMax: 80,  pMin: 25, pMax: 40, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 2.00, dMax: 3.00, denom: 600,  travel: 70,  kph: 290,  nXP: 97,  sXP: 2767 },
+  "Venators":           { sup: "Superior Venator",            w: 10, min: 120, max: 180, eMin: null, eMax: null, qMin: 50,  qMax: 100, pMin: 10, pMax: 25, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 0.50, dMax: 1.00, denom: 536,  travel: 60,  kph: 107,  nXP: 405, sXP: 3622 },
+  "Gargoyles":          { sup: "Marble gargoyle",             w: 10, min: 120, max: 180, eMin: 200,  eMax: 250,  qMin: 50,  qMax: 100, pMin: 15, pMax: 30, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 2.00, dMax: 3.00, denom: 520,  travel: 17,  kph: 380,  nXP: 105, sXP: 3044 },
+  "Aquanites":          { sup: "Superior Aquanite",           w: 10, min: 40,  max: 60,  eMin: 150,  eMax: 200,  qMin: 50,  qMax: 100, pMin: 25, pMax: 40, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 2.00, dMax: 3.00, denom: 472,  travel: 50,  kph: 200,  nXP: 180, sXP: 4200 },
+  "Nechryael":          { sup: "Nechryarch",                  w: 8,  min: 150, max: 200, eMin: 200,  eMax: 250,  qMin: 50,  qMax: 100, pMin: 10, pMax: 20, cMin: 0.35, cMax: 0.75, xMin: 0.15, xMax: 0.30, dMin: 0.70, dMax: 1.20, denom: 440,  travel: 125, kph: 743,  nXP: 105, sXP: 3280 },
+  "Drakes":             { sup: "Guardian Drake",              w: 10, min: 40,  max: 60,  eMin: null, eMax: null, qMin: 30,  qMax: 80,  pMin: 25, pMax: 40, cMin: 0.75, cMax: 1.50, xMin: 0.25, xMax: 0.75, dMin: 0.75, dMax: 1.50, denom: 368,  travel: 55,  kph: 155,  nXP: 231, sXP: 7245 },
+  "Abyssal Demons":     { sup: "Greater abyssal demon",       w: 8,  min: 120, max: 180, eMin: 200,  eMax: 250,  qMin: 50,  qMax: 100, pMin: 10, pMax: 25, cMin: 0.35, cMax: 0.75, xMin: 0.10, xMax: 0.25, dMin: 0.30, dMax: 0.60, denom: 352,  travel: 125, kph: 791,  nXP: 150, sXP: 4200 },
+  "Dark Beasts":        { sup: "Night beast",                 w: 10, min: 40,  max: 60,  eMin: 110,  eMax: 135,  qMin: 30,  qMax: 80,  pMin: 10, pMax: 25, cMin: 0.75, cMax: 1.50, xMin: 0.35, xMax: 0.75, dMin: 2.00, dMax: 3.00, denom: 256,  travel: 17,  kph: 205,  nXP: 225, sXP: 6462 },
+  "Araxytes":           { sup: "Dreadborn Araxyte",           w: 8,  min: 120, max: 180, eMin: 200,  eMax: 250,  qMin: 50,  qMax: 100, pMin: 10, pMax: 20, cMin: 0.35, cMax: 0.75, xMin: 0.05, xMax: 0.15, dMin: 0.10, dMax: 0.25, denom: 224,  travel: 20,  kph: 769,  nXP: 100, sXP: 4658 },
+  "Smoke Devils":       { sup: "Nuclear smoke devil",         w: 8,  min: 80,  max: 120, eMin: null, eMax: null, qMin: 50,  qMax: 100, pMin: 10, pMax: 20, cMin: 0.35, cMax: 0.75, xMin: 0.05, xMax: 0.15, dMin: 0.10, dMax: 0.25, denom: 200,  travel: 50,  kph: 800,  nXP: 185, sXP: 2400 },
+  "Hydras":             { sup: "Colossal Hydra",              w: 10, min: 150, max: 200, eMin: null, eMax: null, qMin: 50,  qMax: 100, pMin: 15, pMax: 30, cMin: 0.75, cMax: 1.50, xMin: 0.10, xMax: 0.30, dMin: 0.75, dMax: 1.50, denom: 160,  travel: 45,  kph: 149,  nXP: 322, sXP: 8625 }
+};
+
+let TASK_DATA = JSON.parse(JSON.stringify(DEFAULT_TASK_DATA));
+
+// State & Config
+let config = {
+  eliteCA: true,
+  slayerCape: true,
+  useSlaughter: true,
+  useExpeditious: true,
+  slaughterHrs: 64.0,
+  slaughterDenom: 250,
+  blocked: ["Drakes", "Hydras"],
+  extensions: {
+    "Dark Beasts": false, "Araxytes": true, "Gargoyles": false,
+    "Abyssal Demons": false, "Nechryael": false, "Cave Horrors": false,
+    "Dust Devils": false, "Aberrant Spectres": false, "Bloodveld": false,
+    "Wyrms": false, "Gryphons": false, "Custodian Stalkers": false,
+    "Basilisks": false, "Aquanites": false
+  }
+};
+
+// ==============================================================================
+// INITIALIZATION & UI HELPERS
+// ==============================================================================
+function initUI() {
+  renderBlockPills();
+  renderExtPills();
+  renderKPHEditor();
+  syncConfig();
+}
+
+function renderBlockPills() {
+  const container = document.getElementById("blockPills");
+  container.innerHTML = "";
+  Object.keys(TASK_DATA).forEach(m => {
+    const pill = document.createElement("div");
+    const isBlocked = config.blocked.includes(m);
+    pill.className = "pill" + (isBlocked ? " blocked" : "");
+    pill.textContent = m;
+    pill.onclick = () => {
+      if (config.blocked.includes(m)) {
+        config.blocked = config.blocked.filter(x => x !== m);
+      } else {
+        if (config.blocked.length >= 2) {
+          config.blocked.shift();
+        }
+        config.blocked.push(m);
+      }
+      renderBlockPills();
+      document.getElementById("blockCountLabel").textContent = config.blocked.length + " / 2";
+    };
+    container.appendChild(pill);
+  });
+}
+
+function renderExtPills() {
+  const container = document.getElementById("extPills");
+  container.innerHTML = "";
+  Object.keys(config.extensions).forEach(m => {
+    const pill = document.createElement("div");
+    const isExt = config.extensions[m];
+    pill.className = "pill" + (isExt ? " extended" : "");
+    pill.textContent = m;
+    pill.onclick = () => {
+      config.extensions[m] = !config.extensions[m];
+      renderExtPills();
+      const activeCnt = Object.values(config.extensions).filter(Boolean).length;
+      document.getElementById("extCountLabel").textContent = activeCnt + " Active";
+    };
+    container.appendChild(pill);
+  });
+}
+
+function renderKPHEditor() {
+  const container = document.getElementById("kphEditor");
+  container.innerHTML = "";
+  Object.keys(TASK_DATA).forEach(m => {
+    const row = document.createElement("div");
+    row.className = "num-input-row";
+    const span = document.createElement("span");
+    span.textContent = m;
+    const input = document.createElement("input");
+    input.type = "number";
+    input.value = TASK_DATA[m].kph;
+    input.min = "10";
+    input.max = "5000";
+    input.onchange = function() { updateKPH(m, this.value); };
+    row.appendChild(span);
+    row.appendChild(input);
+    container.appendChild(row);
+  });
+}
+
+function updateKPH(monster, val) {
+  const parsed = parseFloat(val);
+  if (!isNaN(parsed) && parsed > 0) {
+    TASK_DATA[monster].kph = parsed;
+  }
+}
+
+function resetKPH() {
+  TASK_DATA = JSON.parse(JSON.stringify(DEFAULT_TASK_DATA));
+  renderKPHEditor();
+}
+
+function syncConfig() {
+  config.eliteCA = document.getElementById("cfgEliteCA").checked;
+  config.slayerCape = document.getElementById("cfgSlayerCape").checked;
+  config.useSlaughter = document.getElementById("cfgSlaughter").checked;
+  config.useExpeditious = document.getElementById("cfgExpeditious").checked;
+  config.slaughterHrs = parseFloat(document.getElementById("cfgSlaughterHrs").value) || 64.0;
+  config.slaughterDenom = parseFloat(document.getElementById("cfgSlaughterDenom").value) || 250;
+  document.getElementById("hudSupRate").textContent = config.eliteCA ? "1/150 Spawn Rate" : "1/200 Spawn Rate";
+}
+
+function switchMode(mode) {
+  document.getElementById("tabLiveBtn").classList.toggle("active", mode === "live");
+  document.getElementById("tabBatchBtn").classList.toggle("active", mode === "batch");
+  document.getElementById("liveModeView").classList.toggle("hidden", mode !== "live");
+  document.getElementById("batchModeView").classList.toggle("hidden", mode !== "batch");
+}
+
+// ==============================================================================
+// CORE MORTIMER MATH & TASK ENGINE
+// ==============================================================================
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getSuperiorSpawnRate() {
+  return config.eliteCA ? (1 / 150) : (1 / 200);
+}
+
+function chooseBracelet(monsterName, dropBonus) {
+  const d = TASK_DATA[monsterName];
+  if (d.denom === 0) {
+    return config.useExpeditious ? "Expeditious" : "None";
+  }
+  const effectiveDenom = d.denom / (1.0 + dropBonus);
+  const rolledDropRate = 1.0 / effectiveDenom;
+  const heartsPerKill = getSuperiorSpawnRate() * rolledDropRate;
+  const combatHoursPerHeart = 1.0 / (d.kph * heartsPerKill);
+
+  if (effectiveDenom <= config.slaughterDenom || combatHoursPerHeart <= config.slaughterHrs) {
+    return config.useSlaughter ? "Slaughter" : "None";
+  } else {
+    return config.useExpeditious ? "Expeditious" : "None";
+  }
+}
+
+function rollTaskDetails(monsterName, completedTasks) {
+  const d = TASK_DATA[monsterName];
+  const baseQty = (config.extensions[monsterName] && d.eMin !== null)
+    ? randInt(d.eMin, d.eMax)
+    : randInt(d.min, d.max);
+
+  let qty = baseQty;
+  const availMods = ["Points", "Quantity"];
+  if (completedTasks >= 15 && d.cMin !== null) availMods.push("Clues");
+  if (completedTasks >= 25) availMods.push("Drop");
+  if (completedTasks >= 40) availMods.push("XP");
+
+  const selectedMod = availMods[Math.floor(Math.random() * availMods.length)];
+  let xpBonus = 0.0, dropBonus = 0.0, points = 0, modDesc = "";
+
+  if (selectedMod === "Quantity") {
+    const diff = randInt(d.qMin, d.qMax);
+    qty = Math.max(10, baseQty + diff);
+    const actualDiff = qty - baseQty;
+    modDesc = "Quantity (" + (actualDiff >= 0 ? "+" : "") + actualDiff + " kills)";
+  } else if (selectedMod === "Points") {
+    points = randInt(d.pMin, d.pMax);
+    modDesc = "Slayer Points (+" + points + " pts)";
+  } else if (selectedMod === "Clues") {
+    const steps = Math.round((d.cMax - d.cMin) / 0.05);
+    const cBonus = d.cMin + randInt(0, steps) * 0.05;
+    modDesc = "Clue Rate (+" + Math.round(cBonus * 100) + "%)";
+  } else if (selectedMod === "XP") {
+    const steps = Math.round((d.xMax - d.xMin) / 0.05);
+    xpBonus = d.xMin + randInt(0, steps) * 0.05;
+    modDesc = "Slayer XP (+" + Math.round(xpBonus * 100) + "%)";
+  } else if (selectedMod === "Drop") {
+    const steps = Math.round((d.dMax - d.dMin) / 0.05);
+    dropBonus = d.dMin + randInt(0, steps) * 0.05;
+    modDesc = "Superior Unique (+" + Math.round(dropBonus * 100) + "%)";
+  }
+
+  const bracelet = chooseBracelet(monsterName, dropBonus);
+  const effDenom = d.denom > 0 ? Math.round(d.denom / (1.0 + dropBonus)) : 0;
+
+  return {
+    monster: monsterName,
+    quantity: qty,
+    modifier: selectedMod,
+    modDesc: modDesc,
+    xpBonus: xpBonus,
+    dropBonus: dropBonus,
+    points: points,
+    bracelet: bracelet,
+    effDenom: effDenom
+  };
+}
+
+function evaluateTaskValue(task) {
+  const d = TASK_DATA[task.monster];
+  let effectiveKills = task.quantity;
+  if (task.bracelet === "Slaughter") effectiveKills = task.quantity / 0.75;
+  else if (task.bracelet === "Expeditious") effectiveKills = task.quantity / 1.25;
+
+  const combatHours = effectiveKills / d.kph;
+  const travelHours = d.travel / 3600.0;
+  const totalHours = combatHours + travelHours;
+
+  let expectedHearts = 0.0;
+  if (d.denom > 0) {
+    const dropRate = (1.0 / d.denom) * (1.0 + task.dropBonus);
+    expectedHearts = effectiveKills * getSuperiorSpawnRate() * dropRate;
+  }
+  return (expectedHearts * config.slaughterHrs) - totalHours;
+}
+
+function generateTaskOffer(completedTasks) {
+  const numChoices = completedTasks >= 50 ? 3 : 2;
+  const pool = Object.keys(TASK_DATA).filter(m => !config.blocked.includes(m));
+  const weights = pool.map(m => TASK_DATA[m].w);
+
+  const sampled = [];
+  for (let i = 0; i < numChoices; i++) {
+    const totalW = weights.reduce((a, b) => a + b, 0);
+    let r = Math.random() * totalW;
+    let chosenIdx = 0;
+    for (let j = 0; j < pool.length; j++) {
+      r -= weights[j];
+      if (r <= 0) {
+        chosenIdx = j;
+        break;
+      }
+    }
+    sampled.push(pool[chosenIdx]);
+    pool.splice(chosenIdx, 1);
+    weights.splice(chosenIdx, 1);
+  }
+
+  const offers = sampled.map(m => rollTaskDetails(m, completedTasks));
+  let bestTask = offers[0];
+  let bestScore = evaluateTaskValue(offers[0]);
+  for (let i = 1; i < offers.length; i++) {
+    const s = evaluateTaskValue(offers[i]);
+    if (s > bestScore) {
+      bestScore = s;
+      bestTask = offers[i];
+    }
+  }
+  return { offers: offers, bestTask: bestTask };
+}
+
+// ==============================================================================
+// LIVE 1-PLAYER JOURNEY ENGINE
+// ==============================================================================
+let liveState = {
+  running: false,
+  speed: 1,
+  timer: null,
+  streak: 50,
+  tasksDone: 0,
+  xp: 0,
+  timeSec: 0,
+  superiors: 0,
+  gems: 0,
+  dustStaves: 0,
+  mistStaves: 0,
+  currentTask: null,
+  remainingKills: 0,
+  initialKills: 0,
+  actualKillsThisTask: 0,
+  gotHeart: false
+};
+
+function setLiveSpeed(spd) {
+  liveState.speed = spd;
+  document.getElementById("spd1").classList.toggle("active", spd === 1);
+  document.getElementById("spd5").classList.toggle("active", spd === 5);
+  document.getElementById("spd25").classList.toggle("active", spd === 25);
+  document.getElementById("spdMax").classList.toggle("active", spd === 100);
+}
+
+function appendChat(html, className) {
+  const box = document.getElementById("chatbox");
+  const div = document.createElement("div");
+  div.className = "log-line " + (className || "");
+  div.innerHTML = html;
+  box.appendChild(div);
+  while (box.children.length > 250) {
+    box.removeChild(box.firstChild);
+  }
+  box.scrollTop = box.scrollHeight;
+}
+
+function clearChat() {
+  document.getElementById("chatbox").innerHTML = "";
+}
+
+function showClogPopup(itemText) {
+  const banner = document.getElementById("clogBanner");
+  document.getElementById("clogText").textContent = itemText;
+  banner.style.display = "block";
+}
+
+function renderTaskCards(offers, chosenTask, isCapeProc) {
+  const container = document.getElementById("choicesContainer");
+  container.innerHTML = "";
+  document.getElementById("offerStatusLabel").textContent = isCapeProc
+    ? "🔥 SLAYER CAPE ACTIVATED (10% Repeat Proc!)"
+    : "Mortimer Streak: " + liveState.streak + " (Picked Best Efficiency)";
+
+  offers.forEach(off => {
+    const isChosen = (off === chosenTask);
+    const d = TASK_DATA[off.monster];
+    const card = document.createElement("div");
+    card.className = "task-card" + (isChosen ? " chosen" : "") + (isChosen && isCapeProc ? " cape-proc" : "");
+
+    const badgeText = isChosen ? (isCapeProc ? "Cape Repeat" : "Chosen") : "";
+    const rateStr = off.effDenom > 0 ? ("1/" + off.effDenom + " Heart") : "No Superior";
+    const badgeHtml = isChosen ? ('<div class="chosen-badge">' + badgeText + '</div>') : '';
+
+    card.innerHTML =
+      badgeHtml +
+      '<div>' +
+        '<div class="task-monster">' + off.quantity + 'x ' + off.monster + '</div>' +
+        '<div class="task-superior">' + d.sup + ' • ' + rateStr + '</div>' +
+        '<span class="mod-badge mod-' + off.modifier + '">' + off.modDesc + '</span>' +
+      '</div>' +
+      '<div class="task-meta">' +
+        '<span>⚡ ' + d.kph + ' KPH</span>' +
+        '<span class="bracelet-tag bracelet-' + off.bracelet + '">' + off.bracelet + '</span>' +
+      '</div>';
+
+    container.appendChild(card);
+  });
+}
+
+function startNewLiveTask() {
+  liveState.tasksDone += 1;
+
+  if (
+    config.slayerCape &&
+    liveState.currentTask &&
+    evaluateTaskValue(liveState.currentTask) > 0 &&
+    Math.random() < 0.10
+  ) {
+    renderTaskCards([liveState.currentTask], liveState.currentTask, true);
+    appendChat(
+      "[Task #" + liveState.tasksDone + " | Streak: " + liveState.streak + "] <b>Slayer Cape proc!</b> Repeating " +
+      liveState.currentTask.quantity + "x " + liveState.currentTask.monster + " (" + liveState.currentTask.modDesc + ")",
+      "log-task"
+    );
+  } else {
+    const res = generateTaskOffer(liveState.streak);
+    liveState.currentTask = res.bestTask;
+    renderTaskCards(res.offers, res.bestTask, false);
+    appendChat(
+      "[Task #" + liveState.tasksDone + " | Streak: " + liveState.streak + "] Assigned <b>" +
+      res.bestTask.quantity + "x " + res.bestTask.monster + "</b> | " + res.bestTask.modDesc +
+      " | Bracelet: <b>" + res.bestTask.bracelet + "</b>",
+      "log-task"
+    );
+  }
+
+  const d = TASK_DATA[liveState.currentTask.monster];
+  liveState.timeSec += d.travel;
+  liveState.remainingKills = liveState.currentTask.quantity;
+  liveState.initialKills = liveState.currentTask.quantity;
+  liveState.actualKillsThisTask = 0;
+
+  document.getElementById("activeTaskTitle").textContent =
+    liveState.currentTask.monster + " (" + liveState.currentTask.modDesc + ")";
+  document.getElementById("activeBraceletLabel").textContent =
+    "Bracelet: " + liveState.currentTask.bracelet + " | Effective Heart Rate: " +
+    (liveState.currentTask.effDenom > 0 ? "1/" + liveState.currentTask.effDenom : "N/A");
+}
+
+function processSingleKill() {
+  const task = liveState.currentTask;
+  const d = TASK_DATA[task.monster];
+  const secPerKill = 3600.0 / d.kph;
+
+  liveState.actualKillsThisTask += 1;
+  liveState.timeSec += secPerKill;
+
+  const xpMult = 1.0 + task.xpBonus;
+  const dropMult = 1.0 + task.dropBonus;
+  const spawnRate = getSuperiorSpawnRate();
+
+  if (d.denom > 0 && Math.random() < spawnRate) {
+    liveState.superiors += 1;
+    liveState.xp += d.sXP * xpMult;
+
+    const uniqueChance = (1.0 / d.denom) * dropMult;
+    const roll = Math.random();
+
+    appendChat(
+      "✨ [Kill #" + liveState.actualKillsThisTask + "] A superior <b>" + d.sup + "</b> has spawned! " +
+      "(Superior #" + liveState.superiors + " | Heart rate: 1/" + task.effDenom + ")",
+      "log-superior"
+    );
+
+    if (roll < uniqueChance) {
+      liveState.gotHeart = true;
+      liveState.streak += 1;
+      showClogPopup("Imbued heart (" + d.sup + " - Task #" + liveState.tasksDone + ")");
+      appendChat(
+        "❤️ COLLECTION LOG COMPLETED: IMBUED HEART! Dropped by " + d.sup + " on kill #" +
+        liveState.actualKillsThisTask + " (" + liveState.tasksDone + " tasks, " +
+        (liveState.timeSec / 3600).toFixed(1) + " hrs, " + Math.round(liveState.xp).toLocaleString() + " XP)!",
+        "log-heart"
+      );
+      stopLiveSim();
+      updateLiveHUD();
+      return;
+    } else if (roll < uniqueChance * 2.0) {
+      liveState.gems += 1;
+      showClogPopup("Eternal gem #" + liveState.gems + " (" + d.sup + ")");
+      appendChat(
+        "💎 UNIQUE TABLE HIT (1/" + task.effDenom + ")! You received an <b>Eternal gem</b> from " +
+        d.sup + "! (Total Gems: " + liveState.gems + ")",
+        "log-gem"
+      );
+    } else if (roll < uniqueChance * 5.0) {
+      liveState.dustStaves += 1;
+      appendChat("🪄 Unique Table: " + d.sup + " dropped a Dust battlestaff.", "log-staff");
+    } else if (roll < uniqueChance * 8.0) {
+      liveState.mistStaves += 1;
+      appendChat("🌊 Unique Table: " + d.sup + " dropped a Mist battlestaff.", "log-staff");
+    }
+  } else {
+    liveState.xp += d.nXP * xpMult;
+  }
+
+  // Bracelet task counter decrement
+  if (task.bracelet === "Slaughter") {
+    if (Math.random() >= 0.25) liveState.remainingKills -= 1;
+  } else if (task.bracelet === "Expeditious") {
+    if (liveState.remainingKills > 1 && Math.random() < 0.25) liveState.remainingKills -= 2;
+    else liveState.remainingKills -= 1;
+  } else {
+    liveState.remainingKills -= 1;
+  }
+
+  if (liveState.remainingKills <= 0) {
+    liveState.streak += 1;
+  }
+}
+
+function updateLiveHUD() {
+  document.getElementById("hudTasks").textContent = liveState.tasksDone.toLocaleString();
+  document.getElementById("hudStreak").textContent = "Mortimer Streak: " + liveState.streak;
+  const hrs = liveState.timeSec / 3600.0;
+  document.getElementById("hudHours").textContent = hrs.toFixed(1) + " hrs";
+  document.getElementById("hudMins").textContent = Math.round(liveState.timeSec / 60) + " mins";
+  document.getElementById("hudXP").textContent = Math.round(liveState.xp).toLocaleString();
+  const xpHr = hrs > 0 ? Math.round(liveState.xp / hrs) : 0;
+  document.getElementById("hudXPHr").textContent = xpHr.toLocaleString() + " XP/hr";
+  document.getElementById("hudSuperiors").textContent = liveState.superiors.toLocaleString();
+  document.getElementById("hudGems").textContent = liveState.gems + " Gems";
+  document.getElementById("hudStaves").textContent = liveState.dustStaves + " Dust | " + liveState.mistStaves + " Mist";
+
+  if (liveState.initialKills > 0) {
+    const done = liveState.initialKills - liveState.remainingKills;
+    const pct = Math.min(100, Math.max(0, (done / liveState.initialKills) * 100));
+    document.getElementById("combatProgressFill").style.width = pct + "%";
+    document.getElementById("combatProgressText").textContent =
+      liveState.remainingKills + " / " + liveState.initialKills + " Kills Remaining (" + liveState.actualKillsThisTask + " slain)";
+  }
+}
+
+function liveTick() {
+  if (!liveState.running || liveState.gotHeart) return;
+
+  const killsPerTick = liveState.speed === 1 ? 3 : liveState.speed === 5 ? 18 : liveState.speed === 25 ? 90 : 450;
+
+  for (let i = 0; i < killsPerTick; i++) {
+    if (liveState.gotHeart) break;
+    if (!liveState.currentTask || liveState.remainingKills <= 0) {
+      startNewLiveTask();
+    }
+    processSingleKill();
+  }
+
+  updateLiveHUD();
+  if (liveState.running && !liveState.gotHeart) {
+    liveState.timer = setTimeout(liveTick, 60);
+  }
+}
+
+function toggleLiveSim() {
+  if (liveState.gotHeart) {
+    resetLiveSim();
+  }
+  if (liveState.running) {
+    stopLiveSim();
+  } else {
+    liveState.running = true;
+    const btn = document.getElementById("btnStartLive");
+    btn.textContent = "⏸ Pause Grind";
+    btn.classList.add("stop");
+    liveTick();
+  }
+}
+
+function stopLiveSim() {
+  liveState.running = false;
+  if (liveState.timer) clearTimeout(liveState.timer);
+  const btn = document.getElementById("btnStartLive");
+  btn.textContent = liveState.gotHeart ? "▶ Start New Grind" : "▶ Resume Grind";
+  btn.classList.remove("stop");
+}
+
+function stepSingleTask() {
+  if (liveState.gotHeart) resetLiveSim();
+  stopLiveSim();
+
+  if (!liveState.currentTask || liveState.remainingKills <= 0) {
+    startNewLiveTask();
+  }
+  while (liveState.remainingKills > 0 && !liveState.gotHeart) {
+    processSingleKill();
+  }
+  updateLiveHUD();
+}
+
+function resetLiveSim() {
+  stopLiveSim();
+  liveState = {
+    running: false,
+    speed: liveState.speed,
+    timer: null,
+    streak: 50,
+    tasksDone: 0,
+    xp: 0,
+    timeSec: 0,
+    superiors: 0,
+    gems: 0,
+    dustStaves: 0,
+    mistStaves: 0,
+    currentTask: null,
+    remainingKills: 0,
+    initialKills: 0,
+    actualKillsThisTask: 0,
+    gotHeart: false
+  };
+  document.getElementById("clogBanner").style.display = "none";
+  document.getElementById("combatProgressFill").style.width = "0%";
+  document.getElementById("combatProgressText").textContent = "0 / 0 Kills Remaining";
+  document.getElementById("activeTaskTitle").textContent = "No Active Task";
+  document.getElementById("btnStartLive").textContent = "▶ Start Slayer Grind";
+  updateLiveHUD();
+  clearChat();
+  appendChat("Simulation reset. Click 'Start Slayer Grind' or 'Step 1 Task' to roll from Mortimer.", "log-muted");
+}
+
+// ==============================================================================
+// BATCH MONTE CARLO SIMULATOR
+// ==============================================================================
+let batchTargetCount = 5000;
+let batchRunning = false;
+
+function setBatchCount(cnt) {
+  if (batchRunning) return;
+  batchTargetCount = cnt;
+  document.getElementById("batchCnt1000").classList.toggle("active", cnt === 1000);
+  document.getElementById("batchCnt5000").classList.toggle("active", cnt === 5000);
+  document.getElementById("batchCnt20000").classList.toggle("active", cnt === 20000);
+  document.getElementById("batchProgressLabel").textContent = "0 / " + cnt.toLocaleString() + " Hearts Found";
+}
+
+function simulateOneFullHeartInstant() {
+  let completedTasks = 50;
+  let totalXP = 0.0;
+  let totalTimeSec = 0.0;
+  let tasksDone = 0;
+  let eternalGems = 0;
+  let superiorsSeen = 0;
+  let currentTask = null;
+  let heartMonster = null;
+  const spawnRate = getSuperiorSpawnRate();
+
+  while (true) {
+    if (
+      config.slayerCape &&
+      currentTask &&
+      evaluateTaskValue(currentTask) > 0 &&
+      Math.random() < 0.10
+    ) {
+      // Repeat task
+    } else {
+      currentTask = generateTaskOffer(completedTasks).bestTask;
+    }
+
+    const monsterName = currentTask.monster;
+    let remainingKills = currentTask.quantity;
+    const bracelet = currentTask.bracelet;
+    const d = TASK_DATA[monsterName];
+
+    totalTimeSec += d.travel;
+    const secPerKill = 3600.0 / d.kph;
+    const xpMult = 1.0 + currentTask.xpBonus;
+    const dropMult = 1.0 + currentTask.dropBonus;
+    const denom = d.denom;
+
+    let gotHeart = false;
+
+    while (remainingKills > 0) {
+      totalTimeSec += secPerKill;
+
+      if (denom > 0 && Math.random() < spawnRate) {
+        superiorsSeen += 1;
+        totalXP += d.sXP * xpMult;
+
+        const uniqueChance = (1.0 / denom) * dropMult;
+        const roll = Math.random();
+        if (roll < uniqueChance) {
+          gotHeart = true;
+          heartMonster = monsterName;
+          break;
+        } else if (roll < uniqueChance * 2.0) {
+          eternalGems += 1;
+        }
+      } else {
+        totalXP += d.nXP * xpMult;
+      }
+
+      if (bracelet === "Slaughter") {
+        if (Math.random() >= 0.25) remainingKills -= 1;
+      } else if (bracelet === "Expeditious") {
+        if (remainingKills > 1 && Math.random() < 0.25) remainingKills -= 2;
+        else remainingKills -= 1;
+      } else {
+        remainingKills -= 1;
+      }
+    }
+
+    tasksDone += 1;
+    completedTasks += 1;
+    if (gotHeart) break;
+  }
+
+  return {
+    tasks: tasksDone,
+    xp: totalXP,
+    hours: totalTimeSec / 3600.0,
+    gems: eternalGems,
+    superiors: superiorsSeen,
+    monster: heartMonster
+  };
+}
+
+function startBatchSim() {
+  if (batchRunning) return;
+  batchRunning = true;
+  const btn = document.getElementById("btnRunBatch");
+  btn.textContent = "⏳ Simulating...";
+  btn.disabled = true;
+
+  const totalToRun = batchTargetCount;
+  let completed = 0;
+
+  let sumTasks = 0, sumHours = 0, sumXP = 0, sumGems = 0, sumSups = 0;
+  let minRun = null, maxRun = null, maxGemRun = null;
+  const monsterCounts = {};
+  Object.keys(TASK_DATA).forEach(m => monsterCounts[m] = 0);
+
+  function runChunk() {
+    const chunkSize = Math.min(150, totalToRun - completed);
+    for (let i = 0; i < chunkSize; i++) {
+      completed += 1;
+      const res = simulateOneFullHeartInstant();
+      res.id = completed;
+
+      sumTasks += res.tasks;
+      sumHours += res.hours;
+      sumXP += res.xp;
+      sumGems += res.gems;
+      sumSups += res.superiors;
+      monsterCounts[res.monster] += 1;
+
+      if (!minRun || res.xp < minRun.xp) minRun = res;
+      if (!maxRun || res.xp > maxRun.xp) maxRun = res;
+      if (!maxGemRun || res.gems > maxGemRun.gems) maxGemRun = res;
+    }
+
+    const pct = ((completed / totalToRun) * 100).toFixed(1);
+    document.getElementById("batchProgressFill").style.width = pct + "%";
+    document.getElementById("batchPctText").textContent = pct + "%";
+    document.getElementById("batchProgressLabel").textContent =
+      completed.toLocaleString() + " / " + totalToRun.toLocaleString() + " Hearts Found";
+    document.getElementById("batchStatusTitle").textContent =
+      completed < totalToRun ? "Running Monte Carlo Simulations..." : "Completed " + totalToRun.toLocaleString() + " Simulations!";
+
+    if (completed < totalToRun) {
+      requestAnimationFrame(runChunk);
+    } else {
+      finishBatchUI(totalToRun, sumTasks, sumHours, sumXP, sumGems, sumSups, minRun, maxRun, maxGemRun, monsterCounts);
+      batchRunning = false;
+      btn.textContent = "🚀 Run Batch Simulation";
+      btn.disabled = false;
+    }
+  }
+
+  requestAnimationFrame(runChunk);
+}
+
+function finishBatchUI(total, sumTasks, sumHours, sumXP, sumGems, sumSups, minRun, maxRun, maxGemRun, monsterCounts) {
+  document.getElementById("bAvgTasks").textContent = (sumTasks / total).toFixed(1);
+  document.getElementById("bAvgHours").textContent = (sumHours / total).toFixed(1) + " hrs";
+  document.getElementById("bAvgXP").textContent = Math.round(sumXP / total).toLocaleString();
+  document.getElementById("bAvgSups").textContent = (sumSups / total).toFixed(1);
+  document.getElementById("bAvgGems").textContent = (sumGems / total).toFixed(2);
+
+  document.getElementById("bMinRun").innerHTML =
+    '<b style="color:var(--osrs-yellow)">' + Math.round(minRun.xp).toLocaleString() + ' XP</b> (Sim #' + minRun.id + ')<br>' +
+    minRun.tasks + ' tasks • ' + minRun.hours.toFixed(2) + ' hrs • ' + minRun.superiors + ' superiors • ' + minRun.gems + ' gems<br>' +
+    'Dropped by: <b>' + minRun.monster + '</b> (' + TASK_DATA[minRun.monster].sup + ')';
+
+  document.getElementById("bMaxRun").innerHTML =
+    '<b style="color:var(--osrs-yellow)">' + Math.round(maxRun.xp).toLocaleString() + ' XP</b> (Sim #' + maxRun.id + ')<br>' +
+    maxRun.tasks + ' tasks • ' + maxRun.hours.toFixed(1) + ' hrs • ' + maxRun.superiors + ' superiors • ' + maxRun.gems + ' gems<br>' +
+    'Dropped by: <b>' + maxRun.monster + '</b> (' + TASK_DATA[maxRun.monster].sup + ')';
+
+  document.getElementById("bGemRun").innerHTML =
+    '<b style="color:var(--osrs-yellow)">' + maxGemRun.gems + ' Eternal Gems</b> (Sim #' + maxGemRun.id + ')<br>' +
+    maxGemRun.tasks + ' tasks • ' + maxGemRun.hours.toFixed(1) + ' hrs • ' + Math.round(maxGemRun.xp).toLocaleString() + ' XP<br>' +
+    'Heart finally dropped by: <b>' + maxGemRun.monster + '</b>';
+
+  // Render Leaderboard Table
+  const tbody = document.getElementById("leaderboardBody");
+  tbody.innerHTML = "";
+  const sorted = Object.entries(monsterCounts).sort((a, b) => b[1] - a[1]);
+  const maxCount = Math.max(1, sorted[0][1]);
+
+  sorted.forEach(([monster, count], idx) => {
+    const pct = ((count / total) * 100).toFixed(2);
+    const barWidth = ((count / maxCount) * 100).toFixed(1);
+    const d = TASK_DATA[monster];
+    const isBlocked = config.blocked.includes(monster);
+    const note = isBlocked
+      ? '<span style="color:var(--osrs-red)"> [BLOCKED]</span>'
+      : (d.denom === 0 ? '<span style="color:var(--text-muted)"> [NO SUPERIOR]</span>' : '');
+
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      '<td style="color:var(--text-muted); font-weight:bold">#' + (idx + 1) + '</td>' +
+      '<td style="font-weight:bold; color:var(--text-main)">' + monster + note + '</td>' +
+      '<td style="color:var(--text-muted)">' + d.sup + '</td>' +
+      '<td style="text-align:right; font-family:monospace; color:var(--osrs-yellow); font-weight:bold">' + count.toLocaleString() + '</td>' +
+      '<td style="text-align:right; font-family:monospace">' + pct + '%</td>' +
+      '<td><div class="bar-wrap"><div class="bar-fill" style="width:' + barWidth + '%"></div></div></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+window.onload = initUI;
+</script>
+</body>
+</html>
