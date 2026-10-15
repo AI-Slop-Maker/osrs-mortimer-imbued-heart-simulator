@@ -746,7 +746,7 @@
     </div>
     <div class="mode-tabs">
       <button class="tab-btn active" id="tabLiveBtn" onclick="switchMode('live')">⚔️ Live 1-Player Journey</button>
-      <button class="tab-btn" id="tabBatchBtn" onclick="switchMode('batch')">📊 Monte Carlo</button>
+      <button class="tab-btn" id="tabBatchBtn" onclick="switchMode('batch')">📊 Batch</button>
     </div>
   </header>
 
@@ -897,7 +897,7 @@
         </div>
       </div>
 
-      <!-- ================= BATCH MONTE CARLO MODE ================= -->
+      <!-- ================= BATCH MODE ================= -->
       <div id="batchModeView" class="hidden">
         <div class="controls-bar">
           <div class="btn-group">
@@ -1601,7 +1601,7 @@ function resetLiveSim() {
 }
 
 // ==============================================================================
-// BATCH MONTE CARLO SIMULATOR
+// BATCH SIMULATOR
 // ==============================================================================
 let batchTargetCount = 5000;
 let batchRunning = false;
@@ -1736,7 +1736,7 @@ function startBatchSim() {
     document.getElementById("batchProgressLabel").textContent =
       completed.toLocaleString() + " / " + totalToRun.toLocaleString() + " Hearts Found";
     document.getElementById("batchStatusTitle").textContent =
-      completed < totalToRun ? "Running Monte Carlo Simulations..." : "Completed " + totalToRun.toLocaleString() + " Simulations!";
+      completed < totalToRun ? "Running Simulations..." : "Completed " + totalToRun.toLocaleString() + " Simulations!";
 
     if (completed < totalToRun) {
       requestAnimationFrame(runChunk);
