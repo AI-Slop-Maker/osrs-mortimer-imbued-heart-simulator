@@ -905,6 +905,7 @@
             <button class="speed-btn" id="batchCnt1000" onclick="setBatchCount(1000)">1,000</button>
             <button class="speed-btn active" id="batchCnt5000" onclick="setBatchCount(5000)">5,000</button>
             <button class="speed-btn" id="batchCnt20000" onclick="setBatchCount(20000)">20,000</button>
+            <button class="speed-btn" id="batchCnt50000" onclick="setBatchCount(50000)">50,000</button>
           </div>
           <div class="btn-group">
             <button class="action-btn" id="btnRunBatch" onclick="startBatchSim()">🚀 Run Batch Simulation</button>
@@ -1612,6 +1613,7 @@ function setBatchCount(cnt) {
   document.getElementById("batchCnt1000").classList.toggle("active", cnt === 1000);
   document.getElementById("batchCnt5000").classList.toggle("active", cnt === 5000);
   document.getElementById("batchCnt20000").classList.toggle("active", cnt === 20000);
+  document.getElementById("batchCnt50000").classList.toggle("active", cnt === 50000);
   document.getElementById("batchProgressLabel").textContent = "0 / " + cnt.toLocaleString() + " Hearts Found";
 }
 
